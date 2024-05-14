@@ -1,2 +1,2 @@
 # Spotify-App
-penis penips penis penis penis penis penis penis pushing penis penis pushing penis truly humble under god
+This app will use the Spotify API to access a users database and look at their listened music, using this data the application will recommend either an artist or a song similar to what they like to listen to. TRST SFD ASF DSAFD ASF DSF D
