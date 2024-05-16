@@ -17,7 +17,7 @@ def get_token():
     url = "https://accounts.spotify.com/api/token"
     headers = {
         "Authorization": "Basic " + auth_base64,
-        "Content-Type": "applications/x-www-form-urlencoded"
+        "Content-Type": "application/x-www-form-urlencoded"
     }
 
     data = {"grant_type": "client_credentials"}
@@ -27,3 +27,4 @@ def get_token():
 
 token = get_token()
 print(token)
+print("fuck")
