@@ -25,7 +25,7 @@ def get_token():
     json_result = json.loads(result.content)
     token = json_result["access_token"]
 
-    token = get_token()
-    print(token)
+token = get_token()
+print(token)
 
     
