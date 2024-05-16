@@ -52,7 +52,7 @@ def get_songs_by_artist(token, artist_id):
     json_result = json.loads(result.content)["tracks"]
     return json_result
 token = get_token()
-artist_result = search_for_artist(token, "Playboi Carti")
+artist_result = search_for_artist(token, "Queen")
 if artist_result:
     print(artist_result["name"])
 artist_id = artist_result["id"]
