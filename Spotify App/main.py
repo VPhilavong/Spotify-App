@@ -1,7 +1,8 @@
 from auth import get_token, get_auth_header
 import json
 import os
-from requests import post, get
+from requests import get
+import requests 
 
 
 def search_for_artist(token, artist_name):
@@ -27,19 +28,60 @@ def get_songs_by_artist(token, artist_id):
     json_result = json.loads(result.content)["tracks"]
     return json_result
 
-def get_song_recommendations(limit=10, seed_tracks='', market="US", seed_genres="rap", target_danceability=0.1):
+#borrowed from github
+def get_metadata(token, query, search_type="track"):
+    response = search_for_artist(token, artist_name)
+    all = []
+    for i in range(len(response['tracks']['items'])):
+        track_name = response['tracks']['items'][i]['name']
+        track_id = response['tracks']['items'][i]['id']
+        artist_name = response['tracks']['items'][i]['artists'][0]['name']
+        artist_id = response['tracks']['items'][i]['artists'][0]['id']
+        album_name = response['tracks']['items'][i]['album']['name']
+        images = response['tracks']['items'][i]['album']['images'][0]['url']
+
+        raw = [track_name, track_id, artist_name, artist_id, images]
+
+    
+    
+    return all
+
+def get_song_recommendations(token, seed_tracks, limit=10, market="US", seed_genres="rap", target_danceability=0.1):
     url = "https://api.spotify.com/v1/recommendations"
     headers = get_auth_header(token)
     params = {
         "seed_tracks": ",".join(seed_tracks),
         "limit": limit,
         "market": market,
-        "seed_generes": seed_genres,
+        "seed_genres": seed_genres,
         "target_danceability": target_danceability
     }
-    result = get(url, headers=headers, params=params)
-    json_result = json.loads()
-    return json_result
+
+    # Debug prints to see what is being sent to the API
+    print("\nError handling to see what the error is.")
+    print(f"URL: {url}")
+    print(f"Headers: {headers}")
+    print(f"Params: {params}")
+
+    response = requests.get(url, headers=headers, params=params)
+    json_response = response.json()
+
+    # Debug print to see the raw response from the API
+    print(f"Response JSON: {json_response}")
+
+    if response.status_code == 200:
+        print("Recommended songs:")
+        recommended_songs = []
+        for idx, track in enumerate(json_response['tracks']):
+            track_name = track['name']
+            artist_name = track['artists'][0]['name']
+            track_link = track['external_urls']['spotify']
+            print(f"{idx + 1}. \"{track_name}\" by {artist_name}")
+            recommended_songs.append([track_name, artist_name, track_link])
+        return recommended_songs
+    else:
+        print(f"Failed to retrieve recommendations: {json_response}")
+        return []
 
 token = get_token()
 artist_result = search_for_artist(token, "Playboi Carti")
@@ -49,13 +91,21 @@ if artist_result:
     artist_id = artist_result["id"]
     songs = get_songs_by_artist(token, artist_id)
     
+    print(f"{artist_result['name']}")
     for idx, song in enumerate(songs):
         print(f"{idx + 1}. {song['name']}")
 
- # Get song recommendations based on the artist's top tracks
+    # Get song recommendations based on the artist's top tracks
     seed_tracks = [song["id"] for song in songs]
-    recommendations = get_song_recommendations(limit=10, seed_tracks='', market="US", seed_genres="rap", target_danceability=0.1)
-    print("\nRecommendations:")
-    for idx, song in enumerate(recommendations):
-        artists = ", ".join([artist["name"] for artist in song["artists"]])
-        print(f"{idx + 1}. {song['name']} by {artists}")
+    print(f"Seed Tracks: {seed_tracks}")
+
+    recommendations = get_song_recommendations(token, seed_tracks, limit=5, market="US", seed_genres="rap", target_danceability=0.1)
+    
+    if recommendations:
+        print("\nRecommended songs:")
+        for idx, song in enumerate(recommendations):
+            track_name = song[0]
+            artist_name = song[1]
+            link = song[2]
+            print(f"{idx + 1}. \"{track_name}\" by {artist_name}")
+            print(f"Link: {link}")
