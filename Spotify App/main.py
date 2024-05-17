@@ -40,8 +40,8 @@ def get_metadata(token, query, search_type="track"):
         album_name = response['tracks']['items'][i]['album']['name']
         images = response['tracks']['items'][i]['album']['images'][0]['url']
 
-        raw = [track_name, track_id, artist_name, artist_id, images]
-
+        raw = [track_name, track_id, artist_name, artist_id, album_name, images]
+        all.append(raw)
     
     
     return all
@@ -49,6 +49,7 @@ def get_metadata(token, query, search_type="track"):
 def get_song_recommendations(token, seed_tracks, limit=10, market="US", seed_genres="rap", target_danceability=0.1):
     url = "https://api.spotify.com/v1/recommendations"
     headers = get_auth_header(token)
+    all_recs = []
     params = {
         "seed_tracks": ",".join(seed_tracks),
         "limit": limit,
@@ -66,9 +67,6 @@ def get_song_recommendations(token, seed_tracks, limit=10, market="US", seed_gen
     response = requests.get(url, headers=headers, params=params)
     json_response = response.json()
 
-    # Debug print to see the raw response from the API
-    print(f"Response JSON: {json_response}")
-
     if response.status_code == 200:
         print("Recommended songs:")
         recommended_songs = []
@@ -80,7 +78,7 @@ def get_song_recommendations(token, seed_tracks, limit=10, market="US", seed_gen
             recommended_songs.append([track_name, artist_name, track_link])
         return recommended_songs
     else:
-        print(f"Failed to retrieve recommendations: {json_response}")
+        print(f"\nFailed to retrieve recommendations: {json_response}")
         return []
 
 token = get_token()
@@ -101,11 +99,3 @@ if artist_result:
 
     recommendations = get_song_recommendations(token, seed_tracks, limit=5, market="US", seed_genres="rap", target_danceability=0.1)
     
-    if recommendations:
-        print("\nRecommended songs:")
-        for idx, song in enumerate(recommendations):
-            track_name = song[0]
-            artist_name = song[1]
-            link = song[2]
-            print(f"{idx + 1}. \"{track_name}\" by {artist_name}")
-            print(f"Link: {link}")
