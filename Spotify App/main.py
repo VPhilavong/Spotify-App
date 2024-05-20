@@ -4,6 +4,28 @@ import os
 from requests import get
 import requests 
 
+def search(query, search_type="artist"):
+    access_token = get_auth_header(token)
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {access_token}"
+
+    }
+    url = "https://api.spotify.com/v1/search"
+    params = {
+        "query": query,
+        "type": search_type.lower(),
+        "limit": 5
+
+    }
+    response = requests.get(url, headers=headers, params=params)
+
+    if response.status_code in range(200, 299):
+        return response.json()
+    else: 
+        print(f"Response Error: {response.status_code}")
+        return response.json()
+
 
 def search_for_artist(token, artist_name):
     url = "https://api.spotify.com/v1/search"
@@ -28,38 +50,30 @@ def get_songs_by_artist(token, artist_id):
     json_result = json.loads(result.content)["tracks"]
     return json_result
 
-#borrowed from github
-def get_metadata(token, query, search_type="track"):
-    response = search_for_artist(token, artist_name)
-    all = []
-    for i in range(len(response['tracks']['items'])):
-        track_name = response['tracks']['items'][i]['name']
-        track_id = response['tracks']['items'][i]['id']
-        artist_name = response['tracks']['items'][i]['artists'][0]['name']
-        artist_id = response['tracks']['items'][i]['artists'][0]['id']
-        album_name = response['tracks']['items'][i]['album']['name']
-        images = response['tracks']['items'][i]['album']['images'][0]['url']
 
-        raw = [track_name, track_id, artist_name, artist_id, album_name, images]
-        all.append(raw)
-    
-    
-    return all
 
-def get_song_recommendations(token, seed_tracks, limit=10, market="US", seed_genres="rap", target_danceability=0.1):
-    url = "https://api.spotify.com/v1/recommendations"
+
+def get_song_recommendations(token, seed_artist, seed_tracks, limit=20, market="US", seed_genres="rap", target_danceability=0.1):
     headers = get_auth_header(token)
-    all_recs = []
+    url = "https://api.spotify.com/v1/recommendations"
+
+    query = f'{url}limit={limit}&market={market}&seed_genres={seed_genres}&target_danceability={target_danceability}'
+    query += f'&seed_tracks={",".join(seed_tracks)}'
+    query += f'&seed_artist={",".join(seed_artist)}'
+
     params = {
         "seed_tracks": ",".join(seed_tracks),
+        "seed_artist": ",".join(seed_artist),
         "limit": limit,
         "market": market,
         "seed_genres": seed_genres,
         "target_danceability": target_danceability
     }
+    
+
 
     # Debug prints to see what is being sent to the API
-    print("\nError handling to see what the error is.")
+    print("\nError handling to see what the ennnnnnrror is.")
     print(f"URL: {url}")
     print(f"Headers: {headers}")
     print(f"Params: {params}")
@@ -82,7 +96,7 @@ def get_song_recommendations(token, seed_tracks, limit=10, market="US", seed_gen
         return []
 
 token = get_token()
-artist_result = search_for_artist(token, "Playboi Carti")
+artist_result = search_for_artist(token, "Drake ")
 
 if artist_result:
     print(artist_result["name"])
@@ -94,8 +108,11 @@ if artist_result:
         print(f"{idx + 1}. {song['name']}")
 
     # Get song recommendations based on the artist's top tracks
-    seed_tracks = [song["id"] for song in songs]
-    print(f"Seed Tracks: {seed_tracks}")
 
-    recommendations = get_song_recommendations(token, seed_tracks, limit=5, market="US", seed_genres="rap", target_danceability=0.1)
+    seed_tracks = [song["id"] for song in songs]
+    print(f"Seeeeeeeed Tracks: {seed_tracks}")
+    
+    seed_artist = [artist_id]
+
+    recommendations = get_song_recommendations(token, seed_artist, seed_tracks, limit=5, market="US", seed_genres="rap", target_danceability=0.1)
     
