@@ -27,5 +27,7 @@ def get_token():
     return token
 
 def get_auth_header(token):
-    
-    return {"Authorization": "Bearer " + token}
+    if isinstance(token, str):
+        return {"Authorization": "Bearer " + token}
+    else:
+        raise ValueError("Invalid access token format")

@@ -29,7 +29,7 @@ class SpotifyAPI:
         )
         return response
 
-def search(query, search_type="artist"):
+def search(token, query, search_type="artist"):
     access_token = get_auth_header(token)
     headers = {
         "Content-Type": "application/json",
@@ -75,59 +75,58 @@ def get_songs_by_artist(token, artist_id):
     json_result = json.loads(result.content)["tracks"]
     return json_result
 
-def get_song_recommendations(token, seed_artist, seed_tracks, limit=20, market="US", seed_genres="rap", target_danceability=0.1):
-    headers = get_auth_header(token)
-    seed_tracks_url = ""
-    url = f"https://api.spotify.com/v1/recommendations?seed_tracks={seed_tracks_url}&limit={limit}"
+def get_meta(self, query, search_type="track"):  # meta data of a track
+    resp = self.search(query, search_type)
+    all = []
+    for i in range(len(resp['tracks']['items'])):
+        track_name = resp['tracks']['items'][i]['name']
+        track_id = resp['tracks']['items'][i]['id']
+        artist_name = resp['tracks']['items'][i]['artists'][0]['name']
+        artist_id = resp['tracks']['items'][i]['artists'][0]['id']
+        album_name = resp['tracks']['items'][i]['album']['name']
+        images = resp['tracks']['items'][i]['album']['images'][0]['url']
 
-    #query = f'{url}limit={limit}&market={market}&seed_genres={seed_genres}&target_danceability={target_danceability}'
-    #query += f'&seed_tracks={",".join(seed_tracks)}'
-    #query += f'&seed_artist={",".join(seed_artist)}'
+        raw = [track_name, track_id, artist_name, artist_id, images]
+        all.append(raw)
 
-    params = {
-        "seed_tracks": ",".join(seed_tracks),
-        "seed_artist": ",".join(seed_artist),
+    return all
+
+
+def get_song_recommendations(token, seed_artists='', seed_tracks='', limit=20, market="US", seed_genres="rap", target_danceability=0.1):
+    access_token = get_auth_header(token)
+    endpoint_url = "https://api.spotify.com/v1/recommendations"
+    query_params = {
         "limit": limit,
         "market": market,
         "seed_genres": seed_genres,
-        "target_danceability": target_danceability
+        "target_danceability": target_danceability,
+        "seed_artists": seed_artists,
+        "seed_tracks": seed_tracks
     }
-    
-    # Debug prints to see what is being sent to the API
-    print("\nError handling to see what the ennnnnnrror is.")
-    print(f"URL: {url}")
-    print(f"Headers: {headers}")
-    print(f"Params: {params}")
 
-    
+    response = requests.get(endpoint_url, headers={
+        "Content-type": "application/json",
+        "Authorization": f"Bearer {access_token}"
+    }, params=query_params)
 
-    
-    #response = requests.get(url, headers=headers, params=params)
-    #json_response = response.json()
 
-    if result:
-        print("Recommended songs:")
-        recommended_songs = []
-        for seed_tracks, track in enumerate(json_result['tracks']):
-            track_name = track['name']
-            artist_name = track['artists'][0]['name']
-            track_link = track['external_urls']['spotify']
-            print(f"{idx + 1}. \"{track_name}\" by {artist_name}")
-            recommended_songs.append([track_name, artist_name, track_link])
-        return recommended_songs
+    # Making the API request
+
+    if response.status_code in range(200, 299):
+        json_response = response.json()
+        return json_response
     else:
-        print(f"\nFailed to retrieve recommendations: {json_result}")
-        return []
-
-
-
+        print(f"API Error: {response.status_code}")
+        print(response.content)
+        return None
 
 #test shit
 token = get_token()
-artist_result = search_for_artist(token, "Drake ")
+artist_result = search_for_artist(token, "Daniel Caesar")
+
+
 
 if artist_result:
-    print(artist_result["name"])
     artist_id = artist_result["id"]
     songs = get_songs_by_artist(token, artist_id)
     
@@ -136,11 +135,15 @@ if artist_result:
         print(f"{idx + 1}. {song['name']}")
 
     # Get song recommendations based on the artist's top tracks
+    seed_artists = [artist_id]
 
     seed_tracks = [song["id"] for song in songs]
     print(f"Seed Track for the artist top 10 and some albums: {seed_tracks}")
     
-    seed_artist = [artist_id]
+recommendations = get_song_recommendations(token, seed_artists, seed_tracks, limit=10, market="US", seed_genres="rap", target_danceability=1.0)
 
-    recommendations = get_song_recommendations(token, seed_artist, seed_tracks, limit=5, market="US", seed_genres="rap", target_danceability=0.1)
-    
+
+if recommendations:
+    print(f"Recommended tracks for {artist_result['name']}:")
+    for idx, song in enumerate(recommendations["tracks"]):
+        print(f"{idx + 1}. {song['name']}")
