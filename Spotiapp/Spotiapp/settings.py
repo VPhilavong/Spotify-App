@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "playground",
+    "app.apps.AppConfig", 
+    "rest_framework",
     "debug_toolbar",
 ]
 
