@@ -2,15 +2,16 @@
 <html>
 <head>
     <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
 
-<h1>Hello World!</h1>
-<p>Welcome to my first Django project!</p>
-
-<form action="{% url 'spotify_login' %}" method="get">
+<h1>Login</h1>
+<h1>
+    <form action="{% url 'spotify_login' %}" method="get">
     <button type="submit">Login with Spotify</button>
-</form>
-
+    </form>
+</h1>
 </body>
 </html>
