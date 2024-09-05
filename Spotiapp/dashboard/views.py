@@ -13,8 +13,11 @@ import spotipy
 
 
 # Create your views here.
-def home(request):
-    return render(request, 'first.html')
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+def login(request):
+    return render(request, 'login.html')
 
 # Spotify login and callback
 def get_spotify_oauth():
@@ -26,40 +29,33 @@ def get_spotify_oauth():
     )
 
 def spotify_login(request):
-    auth_url = get_spotify_client()
-    if isinstance(auth_url, str):
-        return redirect(auth_url)
-    return HttpResponse("Spotify client is ready")
+    sp_oauth = get_spotify_oauth()
+    auth_url = sp_oauth.get_authorize_url()
+    return redirect(auth_url)
 
 def spotify_callback(request):
     sp_oauth = get_spotify_oauth()
     code = request.GET.get('code')
     token_info = sp_oauth.get_access_token(code)
-    sp = spotipy.Spotify(auth=token_info['access_token'])
-    results = sp.current_user_saved_tracks()
-    return JsonResponse(results)
+    request.session['token_info'] = token_info
+    return redirect('dashboard')
 
-#logout
 def logout(request):
     auth_logout(request)
-    return redirect('home')
+    return redirect('login')
 
-# Test
 def top_artists(request):
-    sp_oauth = get_spotify_oauth()
-    code = request.GET.get('code')
-    token_info = sp_oauth.get_access_token(code)
+    token_info = request.session.get('token_info')
+    if not token_info:
+        return redirect('spotify_login')
+
     sp = spotipy.Spotify(auth=token_info['access_token'])
-    
     time_range = request.GET.get('time_range', 'short_term')
-    
-    # Example API call to get the current user's top artists
-    top_artists_data = sp.current_user_top_artists(limit=50, time_range= time_range)
+    top_artists_data = sp.current_user_top_artists(limit=50, time_range=time_range)
     top_artists = top_artists_data['items']
-    
-    # Extract artist names and image URLs
+
     artists_info = []
-    for index, artist in enumerate(top_artists, start = 1):
+    for index, artist in enumerate(top_artists, start=1):
         artist_info = {
             'index': index,
             'name': artist['name'],
@@ -67,15 +63,15 @@ def top_artists(request):
             'spotify_url': artist['external_urls']['spotify']
         }
         artists_info.append(artist_info)
-    
+
     return render(request, 'top_artists.html', {'artists_info': artists_info, 'time_range': time_range})
 
 def top_genres(request):
-    sp_oauth = get_spotify_oauth()
-    code = request.GET.get('code')
-    token_info = sp_oauth.get_access_token(code)
-    sp = spotipy.Spotify(auth=token_info['access_token'])
+    token_info = request.session.get('token_info')
+    if not token_info:
+        return redirect('spotify_login')
 
+    sp = spotipy.Spotify(auth=token_info['access_token'])
     time_range = request.GET.get('time_range', 'short_term')
     
     # Fetch top artists

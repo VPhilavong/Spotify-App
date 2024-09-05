@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My App{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="header">
+        <div class="left-links">
+            <a href="{% url 'dashboard' %}">Home</a>
+            <a href="{% url 'top_artists' %}">Top Artists</a>
+            <a href="{% url 'top_genres' %}">Top Genres</a>
+        </div>
+        <a href="{% url 'logout' %}" class="logout">Logout</a>
+    </div>
+    {% block content %}{% endblock %}
+</body>
+</html>
