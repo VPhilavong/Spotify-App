@@ -3,15 +3,15 @@
 <head>
     <title>Login</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
 <body>
-
-<h1>Login</h1>
-<h1>
+<div class="login-container">
+    <h1>Welcome to Spotiapp</h1>
     <form action="{% url 'spotify_login' %}" method="get">
-    <button type="submit">Login with Spotify</button>
+        <button type="submit">Login with Spotify</button>
     </form>
-</h1>
+    <p>Made by Vincent Philavong</p>
+</div>
 </body>
 </html>

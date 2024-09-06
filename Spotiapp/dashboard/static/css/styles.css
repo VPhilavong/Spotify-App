@@ -1,6 +1,5 @@
 body {
     background-color: #F5F5F5;
-    color: #ffffff;
     font-family: Tahoma, sans-serif;
 }
 
@@ -24,12 +23,21 @@ body {
 }
 
 /* Header */
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #F5F5F5;
+    font-family: Tahoma, sans-serif;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
     background-color: #68C586;
+    box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
+    width: 100%; /* Ensure the header takes up the full width of the viewport */
 }
 
 .header .left-links {

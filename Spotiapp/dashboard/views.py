@@ -14,7 +14,28 @@ import spotipy
 
 # Create your views here.
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    token_info = request.session.get('token_info')
+    if not token_info:
+        return redirect('spotify_login')
+
+    sp = spotipy.Spotify(auth=token_info['access_token'])
+    
+    recently_played_data = sp.current_user_recently_played(limit=10)
+    recently_played_tracks = recently_played_data['items']
+    
+    tracks_info = []
+    for index, item in enumerate(recently_played_tracks, start=1):
+        track = item['track']
+        track_info = {
+            'index': index,
+            'name': track['name'],
+            'artist': track['artists'][0]['name'],
+            'image_url': track['album']['images'][0]['url'] if track['album']['images'] else None,
+            'spotify_url': track['external_urls']['spotify']
+        }
+        tracks_info.append(track_info)
+    
+    return render(request, 'dashboard.html', {'tracks_info': tracks_info})
 
 def login(request):
     return render(request, 'login.html')
@@ -24,7 +45,7 @@ def get_spotify_oauth():
         client_id=settings.SPOTIFY_CLIENT_ID,
         client_secret=settings.SPOTIFY_CLIENT_SECRET,
         redirect_uri=settings.SPOTIFY_REDIRECT_URI,
-        scope="user-top-read user-library-read"
+        scope="user-top-read user-library-read user-read-recently-played",
     )
 
 def spotify_login(request):
@@ -131,3 +152,4 @@ def top_genres(request):
     buf.close()
 
     return render(request, 'data_vis.html', {'genres': top_genres, 'image_base64': image_base64, 'time_range': time_range})
+
