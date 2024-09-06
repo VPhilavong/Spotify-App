@@ -82,16 +82,43 @@ h1 {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #FFFFFF;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
     text-align: center;
 }
 
-.top-genres-container img {
+/* Wrapper for image and list */
+.content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Chart image */
+.chart-image {
     max-width: 100%;
-    height: auto;
     border-radius: 8px;
+}
+
+/* Genre list */
+.genre-list {
+    list-style-type: none;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.genre-list li {
+    background-color: #68C586;
+    padding: 10px;
+    margin-bottom: 5px;
+    width: 100%; 
+    box-sizing: border-box; 
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    height: 50px; 
 }
 
 /* Container for top tracks */
@@ -115,7 +142,7 @@ h1 {
 
 .track p {
     font-size: 1em;
-    color: #666;
+    color: #68C586;
     font-family: Tahoma, sans-serif;
 }
 

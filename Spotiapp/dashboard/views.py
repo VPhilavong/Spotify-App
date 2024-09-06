@@ -19,7 +19,6 @@ def dashboard(request):
 def login(request):
     return render(request, 'login.html')
 
-# Spotify login and callback
 def get_spotify_oauth():
     return SpotifyOAuth(
         client_id=settings.SPOTIFY_CLIENT_ID,
@@ -98,33 +97,37 @@ def top_genres(request):
     sp = spotipy.Spotify(auth=token_info['access_token'])
     time_range = request.GET.get('time_range', 'short_term')
     
-    # Fetch top artists
     top_artists_data = sp.current_user_top_artists(limit=50, time_range=time_range)
     top_artists = top_artists_data['items']
     
-    # Extract genres
     genres = []
     for artist in top_artists:
         genres.extend(artist['genres'])
     
-    # Count genres
-    genre_counts = Counter(genres)
+    # Count the occurrences of each genre
+    genre_counts = {}
+    for genre in genres:
+        if genre in genre_counts:
+            genre_counts[genre] += 1
+        else:
+            genre_counts[genre] = 1
     
-    # Prepare data for the pie chart
-    top_genres = genre_counts.most_common(10)
-    labels = [genre for genre, count in top_genres]
-    data = [count for genre, count in top_genres]
-    
-    # Generate the pie chart
+    # Sort genres by count
+    sorted_genres = sorted(genre_counts.items(), key=lambda x: x[1], reverse=True)
+    top_genres = [genre for genre, count in sorted_genres[:10]]  # Get top 10 genres
+
+    # Generate a pie chart
+    labels, sizes = zip(*sorted_genres[:10])
     fig, ax = plt.subplots()
-    ax.pie(data, labels=labels, autopct='%1.1f%%', startangle=90)
+    fig.patch.set_facecolor('#F5F5F5')  # Set the background color of the figure
+    ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
     ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
-    # Save the plot to a PNG image in memory
+    # Save the plot to a PNG in memory
     buf = io.BytesIO()
-    plt.savefig(buf, format='png')
+    plt.savefig(buf, format='png', facecolor=fig.get_facecolor())  # Save with the background color
     buf.seek(0)
     image_base64 = base64.b64encode(buf.read()).decode('utf-8')
     buf.close()
-    
-    return render(request, 'data_vis.html', {'image_base64': image_base64, 'time_range': time_range})
+
+    return render(request, 'data_vis.html', {'genres': top_genres, 'image_base64': image_base64, 'time_range': time_range})

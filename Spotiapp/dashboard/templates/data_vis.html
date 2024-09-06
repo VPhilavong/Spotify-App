@@ -14,7 +14,7 @@
         <img src="data:image/png;base64,{{ image_base64 }}" alt="Top Genres Pie Chart" class="chart-image">
         <ul class="genre-list">
             {% for genre in genres %}
-                <li>{{ genre }}</li>
+                <li>{{ forloop.counter }}. {{ genre }}</li>
             {% endfor %}
         </ul>
     </div>
