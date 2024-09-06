@@ -1,13 +1,13 @@
-{% extends 'dash.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Top Artists{% endblock %}
 
 {% block content %}
 <h1>Your Top Artists</h1>
 <div class="time-range-links">
-    <a href="{% url 'top_artists' %}?time_range=short_term" class="{% if time_range == 'short_term' %}selected-term{% endif %}">Short Term</a>
-    <a href="{% url 'top_artists' %}?time_range=medium_term" class="{% if time_range == 'medium_term' %}selected-term{% endif %}">Medium Term</a>
-    <a href="{% url 'top_artists' %}?time_range=long_term" class="{% if time_range == 'long_term' %}selected-term{% endif %}">Long Term</a>
+    <a href="{% url 'top_artists' %}?time_range=short_term" class="{% if time_range == 'short_term' %}selected-term{% endif %}">1 Month</a>
+    <a href="{% url 'top_artists' %}?time_range=medium_term" class="{% if time_range == 'medium_term' %}selected-term{% endif %}">6 Month</a>
+    <a href="{% url 'top_artists' %}?time_range=long_term" class="{% if time_range == 'long_term' %}selected-term{% endif %}">1 Year</a>
 </div>
 <div class="artists-container">
     {% for artist in artists_info %}

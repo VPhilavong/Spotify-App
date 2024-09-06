@@ -44,6 +44,30 @@ def logout(request):
     auth_logout(request)
     return redirect('login')
 
+def top_tracks(request):
+    token_info = request.session.get('token_info')
+    if not token_info:
+        return redirect('spotify_login')
+
+    sp = spotipy.Spotify(auth=token_info['access_token'])
+    time_range = request.GET.get('time_range', 'short_term')
+    
+    top_tracks_data = sp.current_user_top_tracks(limit=50, time_range=time_range)
+    top_tracks = top_tracks_data['items']
+    
+    tracks_info = []
+    for index, track in enumerate(top_tracks, start=1):
+        track_info = {
+            'index': index,
+            'name': track['name'],
+            'artist': track['artists'][0]['name'],
+            'image_url': track['album']['images'][0]['url'] if track['album']['images'] else None,
+            'spotify_url': track['external_urls']['spotify']
+        }
+        tracks_info.append(track_info)
+    
+    return render(request, 'top_tracks.html', {'tracks_info': tracks_info, 'time_range': time_range})
+
 def top_artists(request):
     token_info = request.session.get('token_info')
     if not token_info:
