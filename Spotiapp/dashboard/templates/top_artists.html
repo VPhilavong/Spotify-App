@@ -1,26 +1,63 @@
-{% extends 'base.html' %}
-
-{% block title %}Top Artists{% endblock %}
-
-{% block content %}
-<h1>Your Top Artists</h1>
-<div class="time-range-links">
-    <a href="{% url 'top_artists' %}?time_range=short_term" class="{% if time_range == 'short_term' %}selected-term{% endif %}">1 Month</a>
-    <a href="{% url 'top_artists' %}?time_range=medium_term" class="{% if time_range == 'medium_term' %}selected-term{% endif %}">6 Month</a>
-    <a href="{% url 'top_artists' %}?time_range=long_term" class="{% if time_range == 'long_term' %}selected-term{% endif %}">1 Year</a>
-</div>
-<div class="artists-container">
-    {% for artist in artists_info %}
-        <div class="artist">
-            <h2>{{ artist.index }}. {{ artist.name }}</h2>
-            {% if artist.image_url %}
-                <a href="{{ artist.spotify_url }}" target="_blank">
-                    <img src="{{ artist.image_url }}" alt="{{ artist.name }}">
-                </a>
-            {% else %}
-                <p>No image available</p>
-            {% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Artists</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .artist {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .artist img {
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        .artist h2 {
+            margin: 0;
+        }
+        .artist a {
+            text-decoration: none;
+            color: #1db954;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Top Artists</h1>
+        <div class="artists-container">
+            {% for artist in top_artists.items %}
+                <div class="artist">
+                    {% if artist.images and artist.images.0.url %}
+                        <img src="{{ artist.images.0.url }}" alt="{{ artist.name }}" width="100" height="100">
+                    {% else %}
+                        <img src="https://via.placeholder.com/100" alt="No image available" width="100" height="100">
+                    {% endif %}
+                    <div>
+                        <h2>{{ forloop.counter }}. <a href="{{ artist.external_urls.spotify }}" target="_blank">{{ artist.name }}</a></h2>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
-</div>
-{% endblock %}
+    </div>
+</body>
+</html>
