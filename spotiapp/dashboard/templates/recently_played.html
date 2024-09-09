@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Artists</title>
+    <h1>Choose 5 artist to create a playlist from</h1>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="header">
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+    <h1>Your Top Artists</h1>
+    <div class="time-range-links">
+        <a href="{% url 'recently_played' %}?time_range=short_term" class="{% if time_range == 'short_term' %}selected-term{% endif %}">Short Term</a>
+        <a href="{% url 'recently_played' %}?time_range=medium_term" class="{% if time_range == 'medium_term' %}selected-term{% endif %}">Medium Term</a>
+        <a href="{% url 'recently_played' %}?time_range=long_term" class="{% if time_range == 'long_term' %}selected-term{% endif %}">Long Term</a>
+    </div>
+    <div class="artists-container">
+        {% for artist in artists_info %}
+            <div class="artist">
+                <h2>{{ artist.index }}. {{ artist.name }}</h2>
+                {% if artist.image_url %}
+                    <a href="{{ artist.spotify_url }}" target="_blank">
+                        <img src="{{ artist.image_url }}" alt="{{ artist.name }}">
+                    </a>
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

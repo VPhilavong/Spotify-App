@@ -1,0 +1,57 @@
+body {
+    background-color: #F5F5F5;
+    color: #ffffff;
+    font-family: Tahoma, sans-serif;
+}
+.artists-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+.artist {
+    text-align: center;
+    color: #68C586; 
+    font-family: Tahoma, sans-serif;
+}
+.artist img {
+    width: 250px; 
+    height: 250px; 
+    object-fit: cover;
+    border-radius: 50%;
+}
+.header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    background-color: #68C586;
+}
+.header a {
+    color: #F5F5F5;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2.5em;
+    color: #68C586;
+}
+.time-range-links {
+    text-align: center;
+    margin: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.time-range-links a {
+    margin: 0 10px;
+    color: #68C586;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.time-range-links a.selected-term {
+    color: royalblue; 
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
