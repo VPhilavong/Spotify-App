@@ -1,0 +1,30 @@
+.tracks-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.track {
+    text-align: center;
+    color: #68C586; 
+    font-family: Arial, Verdana, sans-serif;
+}
+
+.track h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.track p {
+    font-size: 1em;
+    color: #68C586;
+    font-family: Arial, Verdana, sans-serif;
+}
+
+.track img {
+    width: 250px; 
+    height: 250px; 
+    border-radius: 4px;
+    margin-bottom: 10px;
+}

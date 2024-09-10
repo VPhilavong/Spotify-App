@@ -17,10 +17,10 @@ def recently_played(request):
 def top_tracks(request, limit=50):
     access_token = get_user_tokens(request.session.session_key).access_token
     
-    headers = {'Authorization': f'Bearer {access_token}'}
-    params = {'limit': limit}
-    response = requests.get('https://api.spotify.com/v1/me/top/tracks', headers=headers, params=params)
     time_range = request.GET.get('time_range', 'medium_term')
+    headers = {'Authorization': f'Bearer {access_token}'}
+    params = {'limit': limit, 'time_range': time_range}
+    response = requests.get('https://api.spotify.com/v1/me/top/tracks', headers=headers, params=params)
     
     if response.status_code == 200:
         top_artists = response.json()
@@ -31,10 +31,10 @@ def top_tracks(request, limit=50):
 def top_artists(request, limit=50):
     access_token = get_user_tokens(request.session.session_key).access_token
     
-    headers = {'Authorization': f'Bearer {access_token}'}
-    params = {'limit': limit}
-    response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers, params=params)
     time_range = request.GET.get('time_range', 'medium_term')
+    headers = {'Authorization': f'Bearer {access_token}'}
+    params = {'limit': limit, 'time_range': time_range}
+    response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers, params=params)
     
     if response.status_code == 200:
         top_artists = response.json()

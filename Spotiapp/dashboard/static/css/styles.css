@@ -1,33 +1,22 @@
 body {
     background-color: #F5F5F5;
-    font-family: Tahoma, sans-serif;
 }
 
-/* Container for the artists */
-.artists-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    padding: 20px;
-}
-.artist {
+h1 {
     text-align: center;
-    color: #68C586; 
-    font-family: Tahoma, sans-serif;
+    margin-top: 20px;
+    font-size: 2em;
+    color: #68C586;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
-.artist img {
-    width: 250px; 
-    height: 250px; 
-    object-fit: cover;
-    border-radius: 50%;
-}
+
 
 /* Header */
 html, body {
     margin: 0;
     padding: 0;
     background-color: #F5F5F5;
-    font-family: Tahoma, sans-serif;
+    font-family: Arial, Verdana, sans-serif;
 }
 
 .header {
@@ -37,7 +26,7 @@ html, body {
     padding: 20px;
     background-color: #68C586;
     box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
-    width: 100%; /* Ensure the header takes up the full width of the viewport */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to the header */
 }
 
 .header .left-links {
@@ -48,114 +37,13 @@ html, body {
     margin-right: 20px;
     text-decoration: none;
     color: #F5F5F5;
-    font-size: 1.2em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    font-size: 1em;
 }
 
 .header .logout {
     text-decoration: none;
     color: #F5F5F5;
-    font-size: 1.2em;
-}
-
-h1 {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 2.5em;
-    color: #68C586;
-}
-
-
-/* Time range links */
-.time-range-links {
-    text-align: center;
-    margin: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.time-range-links a {
-    margin: 0 10px;
-    color: #68C586;
-    text-decoration: none;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.time-range-links a.selected-term {
-    color: royalblue; 
-    font-weight: bold;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Container for top genre */
-.top-genres-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-}
-
-/* Wrapper for image and list */
-.content-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-/* Chart image */
-.chart-image {
-    max-width: 100%;
-    border-radius: 8px;
-}
-
-/* Genre list */
-.genre-list {
-    list-style-type: none;
-    text-align: left;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.genre-list li {
-    background-color: #68C586;
-    padding: 10px;
-    margin-bottom: 5px;
-    width: 100%; 
-    box-sizing: border-box; 
-    display: flex;
-    align-items: center; 
-    justify-content: space-between; 
-    height: 50px; 
-}
-
-/* Container for top tracks */
-.tracks-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    padding: 20px;
-}
-
-.track {
-    text-align: center;
-    color: #68C586; 
-    font-family: Tahoma, sans-serif;
-}
-
-.track h2 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-}
-
-.track p {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     font-size: 1em;
-    color: #68C586;
-    font-family: Tahoma, sans-serif;
-}
-
-.track img {
-    max-width: 100%;
-    border-radius: 4px;
-    margin-bottom: 10px;
 }
