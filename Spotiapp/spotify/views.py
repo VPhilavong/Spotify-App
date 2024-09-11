@@ -47,7 +47,7 @@ def spotify_callback(request, format=None):
     update_tokens(
         request.session.session_key, access_token, token_type, expires_in, refresh_token)
 
-    return redirect('test')
+    return redirect('recently_played')
 
 def logout(request):
     request.session.flush()
