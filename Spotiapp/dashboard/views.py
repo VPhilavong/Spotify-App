@@ -21,7 +21,7 @@ def recently_played(request):
 def top_tracks(request, limit=50):
     access_token = get_user_tokens(request.session.session_key).access_token
     
-    time_range = request.GET.get('time_range', 'medium_term')
+    time_range = request.GET.get('time_range', 'short_term')
     headers = {'Authorization': f'Bearer {access_token}'}
     params = {'limit': limit, 'time_range': time_range}
     response = requests.get('https://api.spotify.com/v1/me/top/tracks', headers=headers, params=params)
@@ -35,7 +35,7 @@ def top_tracks(request, limit=50):
 def top_artists(request, limit=50):
     access_token = get_user_tokens(request.session.session_key).access_token
     
-    time_range = request.GET.get('time_range', 'medium_term')
+    time_range = request.GET.get('time_range', 'short_term')
     headers = {'Authorization': f'Bearer {access_token}'}
     params = {'limit': limit, 'time_range': time_range}
     response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers, params=params)
@@ -49,7 +49,7 @@ def top_artists(request, limit=50):
 def top_genres(request):
     access_token = get_user_tokens(request.session.session_key).access_token
 
-    timerange = request.GET.get('time_range', 'medium_term')
+    timerange = request.GET.get('time_range', 'short_term')
     headers = {'Authorization': f'Bearer {access_token}'}
     params = {'time_range': timerange}
     response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers, params=params)
