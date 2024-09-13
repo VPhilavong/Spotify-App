@@ -12,7 +12,7 @@ REDIRECT_URI =  settings.SPOTIFY_REDIRECT_URI
 
 # Create your views here.
 def auth_url(request):
-    scopes = 'user-top-read user-library-read user-read-recently-played user-read-private user-read-playback-state'
+    scopes = 'user-top-read user-library-read user-read-recently-played, playlist-modify-public playlist-modify-private'
     url = Request('GET', 'https://accounts.spotify.com/authorize', params={
             'scope': scopes,
             'response_type': 'code',

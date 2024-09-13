@@ -11,11 +11,14 @@
     <link rel="stylesheet" href="{% static 'css/top_tracks.css' %}">
     <link rel="stylesheet" href="{% static 'css/top_genres.css' %}">
     <link rel="stylesheet" href="{% static 'css/recently_played.css' %}">
+    <link rel="stylesheet" href="{% static 'css/recommendations.css' %}">
+
 </head>
 <body>
     <div class="header">
         <div class="left-links">
-            <a href="{% url 'recently_played' %}">Playback</a>
+            <a href="{% url 'recommendations' %}">Recommendations</a>
+            <a href="{% url 'recently_played' %}">Recently Played</a>
             <a href="{% url 'top_artists' %}">Top Artists</a>
             <a href="{% url 'top_tracks' %}">Top Tracks</a>
             <a href="{% url 'top_genres' %}">Genre Pie</a>
