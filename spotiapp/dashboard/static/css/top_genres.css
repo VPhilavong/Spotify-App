@@ -1,0 +1,35 @@
+/* Container for top genre */
+.top-genres-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Genre list */
+.genre-list {
+    list-style-type: none;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: Arial, Verdana, sans-serif;
+}
+
+/* Pie chart and genre list container */
+.pie-chart-and-list-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    font-family: Arial, Verdana, sans-serif;
+}
+
+/* Pie chart container */
+.pie-chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

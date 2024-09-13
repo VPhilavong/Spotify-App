@@ -1,57 +1,46 @@
 body {
     background-color: #F5F5F5;
-    color: #ffffff;
-    font-family: Tahoma, sans-serif;
 }
-.artists-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    padding: 20px;
-}
-.artist {
-    text-align: center;
-    color: #68C586; 
-    font-family: Tahoma, sans-serif;
-}
-.artist img {
-    width: 250px; 
-    height: 250px; 
-    object-fit: cover;
-    border-radius: 50%;
-}
-.header {
-    display: flex;
-    justify-content: flex-end;
-    padding: 20px;
-    background-color: #68C586;
-}
-.header a {
-    color: #F5F5F5;
-    text-decoration: none;
-    font-size: 1.2em;
-}
+
 h1 {
     text-align: center;
     margin-top: 20px;
-    font-size: 2.5em;
+    font-size: 2em;
     color: #68C586;
-}
-.time-range-links {
-    text-align: center;
-    margin: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.time-range-links a {
-    margin: 0 10px;
-    color: #68C586;
+
+/* Header */
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #F5F5F5;
+    font-family: Arial, Verdana, sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #68C586;
+    box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to the header */
+}
+
+.header .left-links {
+    display: flex;
+}
+
+.header .left-links a {
+    margin-right: 20px;
     text-decoration: none;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #F5F5F5;
+    font-size: 1em;
 }
 
-.time-range-links a.selected-term {
-    color: royalblue; 
-    font-weight: bold;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.header .logout {
+    text-decoration: none;
+    color: #F5F5F5;
+    font-size: 1em;
 }

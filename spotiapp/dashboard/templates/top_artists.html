@@ -1,35 +1,32 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top Artists</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <div class="header">
-        <a href="{% url 'logout' %}">Logout</a>
-    </div>
-    <h1>Your Top Artists</h1>
-    <div class="time-range-links">
-        <a href="{% url 'top_artists' %}?time_range=short_term" class="{% if time_range == 'short_term' %}selected-term{% endif %}">Short Term</a>
-        <a href="{% url 'top_artists' %}?time_range=medium_term" class="{% if time_range == 'medium_term' %}selected-term{% endif %}">Medium Term</a>
-        <a href="{% url 'top_artists' %}?time_range=long_term" class="{% if time_range == 'long_term' %}selected-term{% endif %}">Long Term</a>
-    </div>
+{% extends 'base.html' %}
+
+{% block title %}Top Artists{% endblock %}
+
+{% block content %}
+<h1>Your Top Artists</h1>
+<div class="time-range-links">
+    <a href="{% url 'top_artists' %}?time_range=short_term" class="{% if time_range == 'short_term' %}selected-term{% endif %}">1 month</a>
+    <a href="{% url 'top_artists' %}?time_range=medium_term" class="{% if time_range == 'medium_term' %}selected-term{% endif %}">6 month</a>
+    <a href="{% url 'top_artists' %}?time_range=long_term" class="{% if time_range == 'long_term' %}selected-term{% endif %}">12 month</a>
+</div>
+<div class="container">
     <div class="artists-container">
-        {% for artist in artists_info %}
+        {% for artist in top_artists.items %}
             <div class="artist">
-                <h2>{{ artist.index }}. {{ artist.name }}</h2>
-                {% if artist.image_url %}
-                    <a href="{{ artist.spotify_url }}" target="_blank">
-                        <img src="{{ artist.image_url }}" alt="{{ artist.name }}">
+                <div>
+                    <h2>{{ forloop.counter }}. {{ artist.name }}</h2>
+                </div>
+                {% if artist.images and artist.images.0.url %}
+                    <a href="{{ artist.external_urls.spotify }}" target="_blank">
+                        <img src="{{ artist.images.0.url }}" alt="{{ artist.name }}" width="100" height="100">
                     </a>
                 {% else %}
-                    <p>No image available</p>
+                    <a href="{{ artist.external_urls.spotify }}" target="_blank">
+                        <img src="https://via.placeholder.com/100" alt="No image available" width="100" height="100">
+                    </a>
                 {% endif %}
             </div>
         {% endfor %}
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
