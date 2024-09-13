@@ -43,10 +43,7 @@
                 
                 <!-- More Recommendations button -->
                 {% if next_page %}
-                    <form method="GET" action="{% url 'recommendations' %}">
-                        <input type="hidden" name="page" value="{{ next_page }}">
-                        <button type="submit" id="more-recommendations-btn">More Recommendations</button>
-                    </form>
+                    <button type="button" id="more-recommendations-btn" data-next-page="{{ next_page }}">More Recommendations</button>
                 {% endif %}
             {% elif error %}
                 <p>{{ error }}</p>
@@ -79,6 +76,14 @@
                 }
             });
         });
+    });
+
+    // Handle More Recommendations button click
+    document.getElementById('more-recommendations-btn')?.addEventListener('click', function() {
+        const nextPage = this.getAttribute('data-next-page');
+        if (nextPage) {
+            window.location.href = `?page=${nextPage}`;  // Adjust based on your URL structure
+        }
     });
 </script>
 
