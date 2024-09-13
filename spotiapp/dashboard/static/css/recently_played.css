@@ -1,31 +1,36 @@
-/* Add this to your CSS file or within a <style> block in your HTML */
-.tracks-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
+.recently-played-container {
     padding: 20px;
 }
 
-.track {
+.track-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    list-style-type: none; /* Remove default list styling */
+    padding: 0;
+    margin: 0;
+}
+
+.track-info {
     text-align: center;
-    color: #68C586;
+    color: #68C586; 
     font-family: Arial, Verdana, sans-serif;
 }
 
-.track img {
-    width: 250px; /* Adjust the size as needed */
-    height: 250px; /* Adjust the size as needed */
+.track-info img.album-cover {
+    width: 250px; /* Adjusted size for album covers */
+    height: 250px;
     border-radius: 4px;
     margin-bottom: 10px;
 }
 
-.track h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-.track p {
+.track-details p {
     font-size: 1em;
     color: #68C586;
     font-family: Arial, Verdana, sans-serif;
+    margin: 5px 0; /* Add some spacing between lines */
+}
+
+.track-details p strong {
+    color: #68C586; /* Highlight strong text */
 }

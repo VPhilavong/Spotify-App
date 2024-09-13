@@ -4,23 +4,22 @@
 
 {% block content %}
 <h1>Recently Played Tracks</h1>
-<div class="recently-played-container">
+
+<div class="tracks-container">
     {% if recently_played %}
-        <ul class="track-list">
-            {% for item in recently_played %}
-                <li>
-                    <div class="track-info">
-                        <img src="{{ item.track.album.images.0.url }}" alt="{{ item.track.name }}" class="album-cover">
-                        <div class="track-details">
-                            <p><strong>Track:</strong> {{ item.track.name }}</p>
-                            <p><strong>Artist:</strong> {{ item.track.artists.0.name }}</p>
-                            <p><strong>Album:</strong> {{ item.track.album.name }}</p>
-                            <p><strong>Played at:</strong> {{ item.played_at|date:"F j, Y, g:i a" }}</p>
-                        </div>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
+        {% for item in recently_played %}
+            <div class="track">
+                {% if item.track.album.images %}
+                    <img src="{{ item.track.album.images.0.url }}" alt="{{ item.track.name }}" class="album-cover">
+                {% else %}
+                    <img src="https://via.placeholder.com/100" alt="No image available" class="album-cover">
+                {% endif %}
+                <h2>{{ item.track.name }}</h2>
+                <p><strong>Artist:</strong> {{ item.track.artists.0.name }}</p>
+                <p><strong>Album:</strong> {{ item.track.album.name }}</p>
+                <p><strong>Played at:</strong> {{ item.played_at }}</p>
+            </div>
+        {% endfor %}
     {% elif error %}
         <p>{{ error }}</p>
     {% else %}

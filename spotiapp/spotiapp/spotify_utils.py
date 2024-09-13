@@ -1,4 +1,5 @@
 import spotipy
+import requests
 from spotipy.oauth2 import SpotifyOAuth
 from django.conf import settings
 
@@ -22,3 +23,4 @@ def get_spotify_oauth():
         redirect_uri=settings.SPOTIFY_REDIRECT_URI,
         scope="user-library-read"
     )
+
