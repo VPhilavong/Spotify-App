@@ -5,7 +5,7 @@ from spotify.util import get_user_tokens
 from django.templatetags.static import static
 from django.contrib import messages
 from spotify.util import get_user_tokens, exchange_code_for_token, update_tokens, is_spotify_authenticated
-
+import json
 import matplotlib.pyplot as plt
 import io
 import base64
