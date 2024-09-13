@@ -87,5 +87,20 @@ def top_genres(request):
     else:
          return render(request, 'top_genres.html', {'error': 'Failed to retrieve top genres'})
 
+def recently_played(request, limit=10):
+    access_token = get_user_tokens(request.session.session_key).access_token
+    headers = {'Authorization': f'Bearer {access_token}'}
+    params = {'limit': limit}
+    response = requests.get('https://api.spotify.com/v1/me/player/recently-played', headers=headers, params=params)
+
+    if response.status_code == 200:
+        recently_played = response.json()
+        return render(request, 'recently_played.html', {
+            'recently_played': recently_played['items'],  # Extract the list of items
+            'time_range': request.GET.get('time_range', 'short_term')
+        })
+    else:
+        return render(request, 'recently_played.html', {'error': 'Failed to retrieve recently played tracks'})
+
 def test(request):
     return HttpResponse('Test page')

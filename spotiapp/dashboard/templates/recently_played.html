@@ -1,22 +1,30 @@
 {% extends 'base.html' %}
 
-{% block title %}Recently Played{% endblock %}
+{% block title %}Recently Played Tracks{% endblock %}
 
 {% block content %}
 <h1>Recently Played Tracks</h1>
-<div class="tracks-container">
-    {% for track in tracks_info %}
-        <div class="track">
-            <h2>{{ track.index }}. {{ track.name }}</h2>
-            <p>by {{ track.artist }}</p>
-            {% if track.image_url %}
-                <a href="{{ track.spotify_url }}" target="_blank">
-                    <img src="{{ track.image_url }}" alt="{{ track.name }}">
-                </a>
-            {% else %}
-                <p>No image available</p>
-            {% endif %}
-        </div>
-    {% endfor %}
+<div class="recently-played-container">
+    {% if recently_played %}
+        <ul class="track-list">
+            {% for item in recently_played %}
+                <li>
+                    <div class="track-info">
+                        <img src="{{ item.track.album.images.0.url }}" alt="{{ item.track.name }}" class="album-cover">
+                        <div class="track-details">
+                            <p><strong>Track:</strong> {{ item.track.name }}</p>
+                            <p><strong>Artist:</strong> {{ item.track.artists.0.name }}</p>
+                            <p><strong>Album:</strong> {{ item.track.album.name }}</p>
+                            <p><strong>Played at:</strong> {{ item.played_at|date:"F j, Y, g:i a" }}</p>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif error %}
+        <p>{{ error }}</p>
+    {% else %}
+        <p>No recently played tracks available.</p>
+    {% endif %}
 </div>
 {% endblock %}
