@@ -8,7 +8,10 @@
 .track {
     text-align: center;
     color: #68C586; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 20px;
     font-family: Arial, Verdana, sans-serif;
+    border-radius: 10px;
 }
 
 .track h2 {
