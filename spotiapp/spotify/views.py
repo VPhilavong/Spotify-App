@@ -3,6 +3,7 @@ from django.conf import settings
 from requests import Request, post
 import requests
 from .util import update_tokens, get_user_tokens
+from django.contrib.auth import logout as auth_logout
 
 
 CLIENT_ID = settings.SPOTIFY_CLIENT_ID
@@ -11,7 +12,7 @@ REDIRECT_URI =  settings.SPOTIFY_REDIRECT_URI
 
 # Create your views here.
 def auth_url(request):
-    scopes = 'user-top-read user-library-read user-read-recently-played'
+    scopes = 'user-top-read user-library-read user-read-recently-played user-read-private user-read-playback-state'
     url = Request('GET', 'https://accounts.spotify.com/authorize', params={
             'scope': scopes,
             'response_type': 'code',
@@ -50,5 +51,17 @@ def spotify_callback(request, format=None):
     return redirect('recently_played')
 
 def logout(request):
+    # Clear specific session keys
+    keys_to_clear = ['access_token', 'token_type', 'expires_in', 'refresh_token']
+    for key in keys_to_clear:
+        if key in request.session:
+            del request.session[key]
+    
+    # Use Django's built-in logout function to clear the session
+    auth_logout(request)
+    
+    # Ensure the session is flushed
     request.session.flush()
-    return redirect('login')
+    
+    # Render the custom logout page
+    return render(request, 'logout.html')

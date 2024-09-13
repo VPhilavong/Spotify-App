@@ -39,8 +39,23 @@ html, body {
     font-size: 1em;
 }
 
+.header .right-links {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+}
+
 .header .logout {
     text-decoration: none;
     color: #F5F5F5;
+    margin-left: 20px;
     font-size: 1em;
+}
+
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px; /* Adjust margin to ensure proper spacing */
+    object-fit: cover; /* Ensure the image covers the entire area */
+    vertical-align: middle;
 }
