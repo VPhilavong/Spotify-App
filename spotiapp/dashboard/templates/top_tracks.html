@@ -1,38 +1,72 @@
 {% extends 'base.html' %}
 
-{% block title %}Top Tracks{% endblock %}
+{% block title %}Your Top Tracks{% endblock %}
 
 {% block content %}
 <h1>Your Top Tracks</h1>
+
 <div class="time-range-links">
     <a href="{% url 'top_tracks' %}?time_range=short_term" class="{% if time_range == 'short_term' %}selected-term{% endif %}">1 month</a>
     <a href="{% url 'top_tracks' %}?time_range=medium_term" class="{% if time_range == 'medium_term' %}selected-term{% endif %}">6 months</a>
     <a href="{% url 'top_tracks' %}?time_range=long_term" class="{% if time_range == 'long_term' %}selected-term{% endif %}">12 months</a>
 </div>
 
-<div class="container">
-    <div class="tracks-container">
-        {% for track in top_tracks.items %}
-            <div class="track">
-                {% if track.album.images and track.album.images.0.url %}
-                    <a href="{{ track.external_urls.spotify }}" target="_blank">
-                        <img src="{{ track.album.images.0.url }}" alt="{{ track.name }}" width="100" height="100">
-                    </a>
-                {% else %}
-                    <a href="{{ track.external_urls.spotify }}" target="_blank">
-                        <img src="https://via.placeholder.com/100" alt="No image available" width="100" height="100">
-                    </a>
-                {% endif %}
-                <div>
-                    <h2>{{ forloop.counter }}. {{ track.name }}</h2>
-                    <p>by 
-                        {% for artist in track.artists %}
-                            {{ artist.name }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </p>
+<form method="POST" action="{% url 'recommendations' %}">
+    {% csrf_token %}
+
+    <div class="container">
+        <div class="tracks-container">
+            {% for track in top_tracks.items %}
+                <div class="track" data-track-id="{{ track.id }}">
+                    {% if track.album.images and track.album.images.0.url %}
+                        <a href="{{ track.external_urls.spotify }}" target="_blank">
+                            <img src="{{ track.album.images.0.url }}" alt="{{ track.name }}" width="100" height="100">
+                        </a>
+                    {% else %}
+                        <a href="{{ track.external_urls.spotify }}" target="_blank">
+                            <img src="https://via.placeholder.com/100" alt="No image available" width="100" height="100">
+                        </a>
+                    {% endif %}
+                    <div>
+                        <h2>{{ forloop.counter }}. {{ track.name }}</h2>
+                        <p>by 
+                            {% for artist in track.artists %}
+                                {{ artist.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                    </div>
+
+                    <!-- Add checkbox to select tracks -->
+                    <input type="checkbox" name="selected_songs" value="{{ track.id }}" class="track-checkbox">
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-</div>
+
+    <!-- Submit button for recommendations -->
+    <button type="submit" id="submit-btn" disabled>Get Recommendations</button>
+</form>
+
+<script>
+    const checkboxes = document.querySelectorAll('.track-checkbox');
+    const submitBtn = document.getElementById('submit-btn');
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const checkedBoxes = document.querySelectorAll('.track-checkbox:checked');
+            submitBtn.disabled = checkedBoxes.length !== 5;
+            
+            // Highlight selected tracks
+            checkboxes.forEach(cb => {
+                const trackDiv = cb.closest('.track');
+                if (cb.checked) {
+                    trackDiv.classList.add('selected');
+                } else {
+                    trackDiv.classList.remove('selected');
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock %}

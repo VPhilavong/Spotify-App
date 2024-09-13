@@ -1,30 +1,85 @@
 {% extends 'base.html' %}
 
-{% block title %}Recently Played Tracks{% endblock %}
+{% block title %}Recommendations{% endblock %}
 
 {% block content %}
-<h1>Recently Played Tracks</h1>
-<div class="recently-played-container">
-    {% if recently_played %}
-        <ul class="track-list">
-            {% for item in recently_played %}
-                <li>
-                    <div class="track-info">
-                        <img src="{{ item.track.album.images.0.url }}" alt="{{ item.track.name }}" class="album-cover">
-                        <div class="track-details">
-                            <p><strong>Track:</strong> {{ item.track.name }}</p>
-                            <p><strong>Artist:</strong> {{ item.track.artists.0.name }}</p>
-                            <p><strong>Album:</strong> {{ item.track.album.name }}</p>
-                            <p><strong>Played at:</strong> {{ item.played_at|date:"F j, Y, g:i a" }}</p>
+<h1>Recommendations</h1>
+
+<div class="recommendations-container">
+    <form method="POST" action="{% url 'create_playlist' %}">
+        {% csrf_token %}
+        
+        <div class="recommendations-list">
+            {% if recommendations %}
+                <div class="tracks-list">
+                    {% for track in recommendations %}
+                        <div class="track" data-track-id="{{ track.id }}">
+                            {% if track.album.images %}
+                                <img src="{{ track.album.images.0.url }}" alt="{{ track.name }}" class="album-cover">
+                            {% else %}
+                                <img src="https://via.placeholder.com/100" alt="No image available" class="album-cover">
+                            {% endif %}
+                            
+                            <div class="track-info">
+                                <h2>{{ track.name }}</h2>
+                                <p><strong>Artist:</strong> {{ track.artists.0.name }}</p>
+                                <p><strong>Album:</strong> {{ track.album.name }}</p>
+                                
+                                {% if track.preview_url %}
+                                    <audio controls>
+                                        <source src="{{ track.preview_url }}" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                {% else %}
+                                    <p>No preview available</p>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Add checkbox to select tracks -->
+                            <input type="checkbox" name="selected_tracks" value="{{ track.id }}" class="track-checkbox">
                         </div>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% elif error %}
-        <p>{{ error }}</p>
-    {% else %}
-        <p>No recently played tracks available.</p>
-    {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <!-- More Recommendations button -->
+                {% if next_page %}
+                    <form method="GET" action="{% url 'recommendations' %}">
+                        <input type="hidden" name="page" value="{{ next_page }}">
+                        <button type="submit" id="more-recommendations-btn">More Recommendations</button>
+                    </form>
+                {% endif %}
+            {% elif error %}
+                <p>{{ error }}</p>
+            {% else %}
+                <p>No recommendations available at the moment.</p>
+            {% endif %}
+        </div>
+        
+        <!-- Button to create a playlist -->
+        <button type="submit" id="create-playlist-btn" disabled>Turn into Playlist</button>
+    </form>
 </div>
+
+<script>
+    const checkboxes = document.querySelectorAll('.track-checkbox');
+    const createPlaylistBtn = document.getElementById('create-playlist-btn');
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const checkedBoxes = document.querySelectorAll('.track-checkbox:checked');
+            createPlaylistBtn.disabled = checkedBoxes.length === 0;
+            
+            // Highlight selected tracks
+            checkboxes.forEach(cb => {
+                const trackDiv = cb.closest('.track');
+                if (cb.checked) {
+                    trackDiv.classList.add('selected');
+                } else {
+                    trackDiv.classList.remove('selected');
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock %}

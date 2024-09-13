@@ -25,7 +25,7 @@ from datetime import datetime
 def login(request):
     return render(request, 'login.html')
 
-def recently_played(request, limit = 20):
+def recently_played(request, limit = 50):
     access_token = get_user_tokens(request.session.session_key).access_token
     profile_picture_url = get_user_profile_picture_url(request)
 
@@ -182,16 +182,22 @@ def test(request):
     return HttpResponse('Test page')
 
 
-def recommendations(request, limit=10):
+def recommendations(request):
     access_token = get_user_tokens(request.session.session_key).access_token
     headers = {'Authorization': f'Bearer {access_token}'}
     
     # Get selected songs from the form
     selected_songs = request.POST.getlist('selected_songs')
     
+    # Pagination setup
+    page = int(request.GET.get('page', 1))  # Default to the first page
+    limit = 10
+    offset = (page - 1) * limit
+    
     # Create the recommendations request
     params = {
         'limit': limit,
+        'offset': offset,
         'seed_tracks': ','.join(selected_songs)  # Use selected songs for recommendations
     }
     
@@ -199,7 +205,12 @@ def recommendations(request, limit=10):
 
     if response.status_code == 200:
         recommendations = response.json()
-        return render(request, 'recommendations.html', {'recommendations': recommendations['tracks']})
+        # Check if there are more recommendations to fetch
+        next_page = page + 1 if len(recommendations['tracks']) == limit else None
+        return render(request, 'recommendations.html', {
+            'recommendations': recommendations['tracks'],
+            'next_page': next_page
+        })
     else:
         return render(request, 'error.html', {'error': 'Failed to retrieve recommendations'})
 
@@ -210,19 +221,23 @@ def create_playlist(request):
         if not access_token:
             return HttpResponse("Error: No access token available.", status=400)
 
-        user_id = get_user_tokens(request.session.session_key).access_token
-        if not user_id:
-            return HttpResponse("Error: No user ID found.", status=400)
+        # Get user profile to retrieve the user ID
+        user_profile_response = requests.get('https://api.spotify.com/v1/me', headers={'Authorization': f'Bearer {access_token}'})
+        
+        if user_profile_response.status_code == 200:
+            user_id = user_profile_response.json()['id']
+        else:
+            return HttpResponse("Error: Unable to retrieve user profile.", status=user_profile_response.status_code)
 
-        playlist_name = "FUCK "
+        playlist_name = "SHIT FUCK COOOL PLAYLIST YEAWHHHHH"
         headers = {
             'Authorization': f'Bearer {access_token}',
             'Content-Type': 'application/json'
         }
         data = {
             'name': playlist_name,
-            'description': 'Created via Spotify App',
-            'public': False
+            'description': 'CREATED BY SONGSCOPE YEAAAAAWHHH',
+            'public': True
         }
         response = requests.post(f'https://api.spotify.com/v1/users/{user_id}/playlists', headers=headers, json=data)
 
@@ -239,7 +254,6 @@ def create_playlist(request):
             return HttpResponse(f"Error: {error_message}", status=response.status_code)
 
     return HttpResponse("Error: Invalid request method.", status=405)
-
 def add_tracks_to_playlist(access_token, playlist_id, track_ids):
     url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
     headers = {'Authorization': f'Bearer {access_token}', 'Content-Type': 'application/json'}
@@ -262,18 +276,32 @@ def add_tracks_to_playlist(access_token, playlist_id, track_ids):
         return False
 
 def success_page(request):
-    # Retrieve playlist info from query parameters
     playlist_id = request.GET.get('playlist_id')
     playlist_name = request.GET.get('playlist_name')
     playlist_description = request.GET.get('playlist_description')
 
-    # Optional: Retrieve playlist data from Spotify API if needed
-    # playlist_data = requests.get(f'https://api.spotify.com/v1/playlists/{playlist_id}', headers=headers).json()
+    if not playlist_id:
+        return HttpResponse("Error: No playlist ID provided.", status=400)
+
+    access_token = get_user_tokens(request.session.session_key).access_token
+    headers = {'Authorization': f'Bearer {access_token}'}
+    
+    # Optional: Retrieve playlist data from Spotify API
+    playlist_data_response = requests.get(f'https://api.spotify.com/v1/playlists/{playlist_id}', headers=headers)
+    
+    if playlist_data_response.status_code == 200:
+        playlist_data = playlist_data_response.json()
+    else:
+        playlist_data = {}
 
     context = {
         'playlist_id': playlist_id,
         'playlist_name': playlist_name,
-        'playlist_description': playlist_description
+        'playlist_description': playlist_description,
+        'playlist_data': playlist_data
     }
 
     return render(request, 'success.html', context)
+
+
+

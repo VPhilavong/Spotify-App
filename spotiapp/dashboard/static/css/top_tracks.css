@@ -12,6 +12,13 @@
     padding: 20px;
     font-family: Arial, Verdana, sans-serif;
     border-radius: 10px;
+    cursor: pointer; /* Make the whole box clickable */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.track.selected {
+    background-color: #007bff; /* Blue color for selected tracks */
+    color: white; /* Change text color to white when selected */
 }
 
 .track h2 {
@@ -30,4 +37,12 @@
     height: 250px; 
     border-radius: 4px;
     margin-bottom: 10px;
+}
+
+.track.selected p {
+    color: white; /* Ensure track info text is visible when selected */
+}
+
+.track.selected h2 {
+    color: white; /* Ensure title is visible when selected */
 }
