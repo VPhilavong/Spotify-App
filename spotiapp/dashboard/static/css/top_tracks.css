@@ -7,11 +7,10 @@
 
 .track {
     text-align: center;
-    color: #68C586; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 20px;
+    color: #FDFD96;
     font-family: Arial, Verdana, sans-serif;
     border-radius: 10px;
+    padding: 20px;
 }
 
 .track h2 {
@@ -21,13 +20,13 @@
 
 .track p {
     font-size: 1em;
-    color: #68C586;
+    color: #FDFD96;
     font-family: Arial, Verdana, sans-serif;
 }
 
 .track img {
-    width: 250px; 
-    height: 250px; 
+    width: 300px; 
+    height: 300px; 
     border-radius: 4px;
     margin-bottom: 10px;
 }

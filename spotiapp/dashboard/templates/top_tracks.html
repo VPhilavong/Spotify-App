@@ -25,7 +25,7 @@
                 {% endif %}
                 <div>
                     <h2>{{ forloop.counter }}. {{ track.name }}</h2>
-                    <p>by 
+                    <p>
                         {% for artist in track.artists %}
                             {{ artist.name }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}

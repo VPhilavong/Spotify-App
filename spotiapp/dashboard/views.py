@@ -63,43 +63,6 @@ def top_tracks(request, limit=50):
         return render(request, 'top_tracks.html', {'error': 'Failed to retrieve top artists'})
 
 
-
-def top_tracks(request, limit=50):
-    try:
-        # Fetch the access token
-        access_token = get_user_tokens(request.session.session_key).access_token
-        logging.info(f"Access Token: {access_token}")
-        
-        # Set parameters for the request
-        time_range = request.GET.get('time_range', 'short_term')
-        headers = {'Authorization': f'Bearer {access_token}'}
-        params = {'limit': limit, 'time_range': time_range}
-        
-        logging.info(f"Making request with params: {params}")
-
-        # Make the API request
-        response = requests.get('https://api.spotify.com/v1/me/top/tracks', headers=headers, params=params)
-
-        # Debug the response details
-        logging.info(f"Spotify API Response Code: {response.status_code}")
-        logging.debug(f"Spotify API Response Body: {response.text}")
-
-        # Check for a successful response
-        if response.status_code == 200:
-            top_tracks = response.json()
-            logging.info(f"Top Tracks: {top_tracks}")
-            return render(request, 'top_tracks.html', {'top_tracks': top_tracks, 'time_range': time_range})
-        else:
-            # Log an error message and display the error on the page
-            logging.error(f"Failed to retrieve top tracks. Status Code: {response.status_code}")
-            return render(request, 'top_tracks.html', {'error': 'Failed to retrieve top tracks', 'status_code': response.status_code})
-
-    except Exception as e:
-        # Log any exceptions
-        logging.exception(f"An error occurred: {e}")
-        return render(request, 'top_tracks.html', {'error': 'An unexpected error occurred'})
-
-
 def top_artists(request, limit=50):
     access_token = get_user_tokens(request.session.session_key).access_token
     profile_picture_url = get_user_profile_picture_url(request)

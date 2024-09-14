@@ -1,12 +1,8 @@
-body {
-    background-color: #F5F5F5;
-}
-
 h1 {
     text-align: center;
     margin-top: 20px;
     font-size: 2em;
-    color: #68C586;
+    color: #FDFD96;
 }
 
 
@@ -14,7 +10,7 @@ h1 {
 html, body {
     margin: 0;
     padding: 0;
-    background-color: #F5F5F5;
+    background: linear-gradient(to right, #cc2b5e, #753a88);
     font-family: Arial, Verdana, sans-serif;
 }
 
@@ -23,31 +19,38 @@ html, body {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: #68C586;
-    box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to the header */
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.header .left-links {
+.header .center-links {
     display: flex;
+    align-items: center; 
+    margin: 0 auto; 
 }
 
-.header .left-links a {
+.header .center-links a {
     margin-right: 20px;
     text-decoration: none;
-    color: #F5F5F5;
+    color: #FDFD96;
     font-size: 1em;
+    font-family: 'Arial Narrow Bold', sans-serif;
+
 }
 
 .header .right-links {
     display: flex;
-    align-items: center; /* Align items vertically in the center */
+    align-items: center;
 }
+
+.header .right-links a{
+    margin-left: 20px;
+    vertical-align: middle;
+}
+
 
 .header .logout {
     text-decoration: none;
-    color: #F5F5F5;
-    margin-left: 20px;
+    color: #FDFD96;
     font-size: 1em;
 }
 
