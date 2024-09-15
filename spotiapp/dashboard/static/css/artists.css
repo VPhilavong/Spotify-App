@@ -7,9 +7,10 @@
 }
 .artist {
     text-align: center;
-    color: #68C586; 
-    font-family: Arial, Verdana, sans-serif;
+    color: #FDFD96;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, sans-serif;
 }
+
 .artist img {
     width: 250px; 
     height: 250px; 
