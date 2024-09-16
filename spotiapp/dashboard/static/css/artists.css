@@ -1,5 +1,5 @@
 /* Container for the artists */
-.artists-container {
+.container .artists-container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
@@ -9,6 +9,13 @@
     text-align: center;
     color: #FDFD96;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, sans-serif;
+}
+
+.artist h2{
+    text-align: center;
+    color: #FDFD96;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, sans-serif;
+    margin-bottom: 50px;
 }
 
 .artist img {

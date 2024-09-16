@@ -17,12 +17,26 @@
     color: #FDFD96;
 }
 
+
+
 /* Pie chart and genre list container */
 .pie-chart-and-list-container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     gap: 20px;
+    
+}
+
+.top-genres-container .pie-chart-and-list-container .list h2 {
+    font-size: 1.5em;
+    color: #FDFD96;
+    margin-bottom: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, sans-serif;
+}
+
+.top-genres-container .pie-chart-and-list-container .pie-chart-container img{
+    border-radius: 10%;
 }
 
 .top-genres-container .genre-list{

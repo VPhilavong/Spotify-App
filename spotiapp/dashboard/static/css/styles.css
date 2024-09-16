@@ -25,7 +25,7 @@ html, body {
 .header .center-links {
     display: flex;
     align-items: center; 
-    margin-left: 690px; 
+    margin-left: 35%; 
 }
 
 .header .center-links a {
