@@ -12,14 +12,17 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Spotify API credentials
-SPOTIFY_CLIENT_ID = 'ed48ac15950b492ca9609fa2e0db9fab'
-SPOTIFY_CLIENT_SECRET = 'ead00586c27e4c3494c531db70b1127f'
-SPOTIFY_REDIRECT_URI = 'http://localhost:8000/spotify/callback/'
+SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
+SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
+SPOTIFY_REDIRECT_URI = os.getenv('SPOTIFY_REDIRECT_URI')
 
 
 # Quick-start development settings - unsuitable for production

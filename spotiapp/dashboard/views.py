@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.conf import settings
-from spotify.util import get_user_tokens
 from django.templatetags.static import static
 from django.contrib import messages
 from spotify.util import get_user_tokens, exchange_code_for_token, update_tokens, is_spotify_authenticated
